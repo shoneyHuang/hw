@@ -1,62 +1,71 @@
+from enum import Enum
+class CarType(Enum):
+    LOCOMOTIVE = 'Locomotive'
+    FUEL = 'Fuel'
+    PASSENGER = 'Passenger'
+
 class Train():
-    def __init__(self, manufacturer):
+    def __init__(self, manufacturer,cartype: CarType):
         self.manufacturer = manufacturer
-    def showManufacturer(self):
-        print(self.manufacturer)
+        self.cartype = cartype
+    def showmanufacturer(self):
+        print('車廂製造商:' + self.manufacturer)
 
 class Locomotive(Train):
-    def __init__(self,manufacturer,handler,fuel,connectType):
-        super().__init__(manufacturer)
+    def __init__(self,manufacturer,cartype,handler,fuel:int ,connectType = []):
+        super().__init__(manufacturer,cartype)
         self.handler = handler
         self.fuel = fuel
         self.connectType = connectType
     def showHandler(self):
-        print(self.handler)
+        print('列車長姓名:' + self.handler)
     def showfuel(self):
         print('剩餘 : ' + str(self.fuel) + '燃料')
     def showConnectType(self):
-        print(self.connectType)
-    def travel(self, hours):
-        if(hours < 0):
+        passengerCount = sum(x.cartype == CarType.PASSENGER for x in self.connectType)
+        fuelCount = sum(x.cartype == CarType.FUEL for x in self.connectType)
+        print('共有' + str(passengerCount) + '節乘客車廂，共有' + str(fuelCount) + '節燃料車廂' )
+    def travel(self, hours: int):
+        if(int(hours) < 0):
             raise ValueError('教授你可以選擇輸入正確數字')
-        if(self.fuel < hours * 10):
+        if(self.fuel < int(hours) * 10):
             print('燃料不足')
         else:
-            self.fuel -= hours * 10
-            print('行駛了 ' + hours + ' unit,剩餘' + self.fuel + ' 燃料')
+            self.fuel -= int(hours) * 10
+            print('行駛了 ' + str(hours) + ' unit,剩餘' + str(self.fuel) + ' 燃料')
     def refuel(self):
         self.fuel = 100
         print('燃料已補充完畢')
         
 class PassengerCar(Train):
-    def __init__(self,manufacturer,passenger):
-        super().__init__(manufacturer)
+    def __init__(self,manufacturer,cartype,passenger:int):
+        super().__init__(manufacturer,cartype)
         self.passenger = passenger
     def showPassenger(self):
-        print(self.passenger + '人')
+        print('車廂總人數' + str(self.passenger) + '/20人')
     def boarding(self, units):
-        if(units < 0):
+        if(int(units) < 0):
             raise ValueError('教授你可以選擇輸入正確數字')
-        if(self.passenger + units > 20) :
+        if(self.passenger + int(units) > 20) :
             print('人數已超過車廂最大上限')
         else :
-            self.passenger += units
-            print('這節車廂目前上車' + units + '人，共' + self.passenger + '人')
+            self.passenger += int(units)
+            print('這節車廂目前上車' + units + '人，共' + str(self.passenger) + '人')
     def getoff(self, units):
-        if(units < 0):
+        if(int(units) < 0):
             raise ValueError('教授你可以選擇輸入正確數字')
-        if(self.passenger - units < 0) :
+        if(self.passenger - int(units) < 0) :
             print('超過車上有的人數，是在哈囉?')
         else :
-            self.passenger -= units
-            print('這節車廂目前下車' + units + '人，共' + self.passenger + '人' )
+            self.passenger -= int(units)
+            print('這節車廂目前下車' + units + '人，共' + str(self.passenger) + '人' )
 
 class FuelCar(Train):
-    def __init__(self,manufacturer,fuel):
-        super().__init__(manufacturer)
+    def __init__(self,manufacturer,cartype,fuel: int):
+        super().__init__(manufacturer,cartype)
         self.fuel = fuel
     def showfuel(self):
-        print(self.fuel + '單位燃料')
+        print('剩餘' + str(self.fuel) + '/500單位燃料')
     def refuel(self, units):
         if(units < 0):
             raise ValueError('教授你可以選擇輸入正確數字')
