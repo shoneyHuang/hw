@@ -35,11 +35,11 @@ class Train:
         while(pointer):
             typeTrans = '燃料' if pointer.car.cartype == CarType.FUEL else '乘客'
             if(pointer.car.cartype == CarType.FUEL):
-                print('這是第' + str(pointer.carNum) + '節' + typeTrans + '車廂')
+                print('這是第' + str(pointer.carnum) + '節' + typeTrans + '車廂')
                 pointer.car.showmanufacturer()
                 pointer.car.showfuel()
             else:
-                print('這是第' + str(pointer.carNum) + '節' + typeTrans + '車廂')
+                print('這是第' + str(pointer.carnum) + '節' + typeTrans + '車廂')
                 pointer.car.showmanufacturer()
                 pointer.car.showPassenger()
             pointer = pointer.next
