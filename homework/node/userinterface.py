@@ -18,40 +18,55 @@ def UserInterface():
         print('請問接下來要做什麼?')
         print('==================')
         print('1. 加車廂')
-        print('2. 顯示列車狀態')
-        print('3. 行駛列車')
-        print('4. 乘客上車')
-        print('5. 乘客下車')
-        print('6. 火車頭燃料補充')
-        print('7. 結束')
+        print('2. 刪除指定列車')
+        print('3. 更換火車頭')
+        print('4. 顯示列車狀態')
+        print('5. 行駛列車')
+        print('6. 乘客上車')
+        print('7. 乘客下車')
+        print('8. 火車頭燃料補充')
+        print('Other. 結束')
         print('==================')
         ending = switch_userDoing(input('請輸入: '))
 
         
 
 def doSernoOne():
-    fuelCount = 0
-    carType = input('請問需要哪種車廂? 1.燃料 2.乘客: ')
-    createType = CarType.FUEL if int(carType) == 1 else CarType.PASSENGER
-    carmanufaturer = input('請問製造商? ')
-    if int(carType) == 1:
-        fuelCount = input('請問燃料數量? ')
+    insertIndex = int(input("請問要插到第幾節車廂後?"))
+    # whether car num exists or not
+    if _train.checkCar(insertIndex):
+        car = None
+        carType = int(input('請問需要哪種車廂? 1.燃料 2.乘客: '))
+        createType = CarType.FUEL if carType == 1 else CarType.PASSENGER
+        carmanufaturer = input('請問製造商? ')
+        #if cartype is fuel car
+        if carType == 1:
+            fuelCount = int(input('請問燃料數量? '))
+            if(fuelCount > 500 or fuelCount < 0):
+                print('燃料車廂要給正確的燃料')
+            else:
+                car =   FuelCar(carmanufaturer,createType,fuel)
+        #or passenger car
+        else:
+            car = PassengerCar(carmanufaturer,createType,0)
 
-    addNodeAtEnd(_locomotive,carmanufaturer,createType,fuelCount)
+        _train.addCar(insertIndex,car)
+
+    else:
+        print("車廂不存在!")
     return False
 
 # endModify
-def doSernoTwo():
+def doSernoFour():
     _train.traversal()
     return False
-
 # endModify
-def doSernoThree():
+def doSernoFive():
     travelHour = input('請問要行駛多久? ')
     _train.head.car.travel(travelHour)
     return False
 # endModify
-def doSernoFour():
+def doSernoSix():
     pointer = _train.head.next
     while(pointer):
         if pointer.car.cartype == CarType.PASSENGER:
@@ -59,7 +74,7 @@ def doSernoFour():
         pointer = pointer.next
     return False
 # endModify
-def doSernoFive():
+def doSernoSenven():
     pointer = _train.head.next
     while(pointer):
         if pointer.car.cartype == CarType.PASSENGER:
@@ -67,10 +82,9 @@ def doSernoFive():
         pointer = pointer.next
     return False
 # endModify
-def doSernoSix():
+def doSernoEight():
     _train.head.car.refuel()
     return False
-
 def doEnd():
     return True
 
@@ -82,6 +96,8 @@ def switch_userDoing(argument):
         '3': doSernoThree,
         '4': doSernoFour,
         '5': doSernoFive,
-        '6': doSernoSix
+        '6': doSernoSix,
+        '7': doSernoSeven,
+
     }
     return switcher.get(argument,doEnd)()
