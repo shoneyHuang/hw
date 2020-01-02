@@ -143,7 +143,7 @@ class Train:
         n = self.head
         while n.next is not None:
             if n.item == x:
-                break;
+                break
             n = n.next
         if n.next is not None:
             n.previous.next = n.next
