@@ -16,6 +16,8 @@ class Train:
             self.head = Car(locomotive,self.getCarCount()+1)
         else:
             print('Locomotive exists')
+
+    #get count of cars in train
     def getCarCount(self):
         temp = self.head
         count = 0
@@ -23,6 +25,8 @@ class Train:
             count += 1
             temp = temp.next
         return count
+
+    #show all cars in train
     def traversal(self):
         pointer = self.head
         print("這是火車頭")
@@ -43,28 +47,29 @@ class Train:
                     pointer.car.showmanufacturer()
                     pointer.car.showPassenger()
                 pointer = pointer.next
-    def checkCar(self,specificNum):
+
+    #check index exists in train
+    def checkCar(self,index):
         pointer = self.head
         while (pointer):
-            if pointer.carnum == specificNum:
+            if pointer.carnum == index:
                 return True
             pointer = pointer.next
         return False
 
-    def addCar(self,specificNum,data):
+    # can ignore showing error msg when car not exist 
+    def addCar(self,index,data):
         if self.head is None:
             print("Please init Locomotive first")
         else:
             pointer = self.head
-            index = 1
             # get specific number exists in linked list or not
             while pointer is not None:
-                index += 1
-                if pointer.carnum == specificNum:
+                if pointer.carnum == index:
+                    index += 1
                     break
                 pointer = pointer.next
 
-        
             if pointer is None:
                 print("car not in the train")
             else:
@@ -84,31 +89,47 @@ class Train:
                     pointer.carnum = index
                     pointer = pointer.next
 
-    def deleteCar(self,x):
+    # can ignore showing error msg when car not exist 
+    def deleteCar(self,index):
         if self.head is None:
-            print("The train has no element to delete")
+            print("Please init Locomotive first")
             return
-        if self.head.next is None:
-            if self.head.car == x:
-                self.head = None
-            else:
-                print("Car not found")
-            return
-        if self.head.car == x:
-            self.head = self.head.next
-            self.head.previous = None
-            return
-        
-        n = self.head
-        while n.next is not None:
-            if n.car == x:
-                break
-            n = n.next
-        if n.next is not None:
-            n.previous.next = n.next
-            n.next.previous = n.previous
         else:
-            if n.car == x:
-                n.previous.next = None
-            else :
-                print("Car not found")
+            pointer = self.head
+            # if no other car 
+            if pointer.next is None:
+                if index == 1:
+                    print("火車頭刪屁刪喔？")
+                else:
+                    print("目前只剩火車頭")
+                return
+            #get delete target
+            pointer = pointer.next
+            while(pointer):
+                if pointer.carnum == index:
+                    break
+                pointer = pointer.next
+            #if target next exists, connect previous and next then renumbering
+            if pointer.next is not None:
+                pointer.previous.next = pointer.next
+                pointer.next.previous = pointer.previous
+                pointer.next.carnum = index
+
+                pointer = pointer.next.next
+                while(pointer):
+                    index+=1
+                    pointer.carnum = index
+                    pointer = pointer.next
+            #else clean previous car's next
+            else:
+                if pointer.carnum == index:
+                    pointer.previous.next = None
+                else :
+                    print("車廂不存在")
+
+    # chang locomotive
+    def changeLocomotive(self,locomotive):
+        if self.head is None:
+            self.head = Car(locomotive,self.getCarCount()+1)
+        else:
+            self.head.car = locomotive
