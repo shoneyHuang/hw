@@ -89,27 +89,69 @@ class Car(CarBase):
     def __init__(self,car):
         self.car = car
         self.next = None
-        self.pref = None
+        self.previous = None
         return
 
 class Train:
     def __init__(self):
         self.head = None
-    def insertLocomotive(self,locomotive):
+    def createTrain(self,locomotive):
         if self.head is None:
-            locom = Car(locomotive)
-            self.head = locom
+            self.head = Car(locomotive)
         else:
             print('Locomotive exists')
-
-    def addCar(self,item):
-        if not isinstance(item, Car):
-            item = Car(item)
+    def getCarCount(self):
+        temp = self.head
+        count = 0
+        while (temp):
+            count += 1
+            temp = temp.next
+        return count
+    def addCar(self,x,data):
         if self.head is None:
-            self.head = item
+            print("Please init Locomotive first")
         else:
-            self.tail.next = item
-        self.tail = item
-        return
+            n = self.head
+            while n is not None:
+                if n.item == x:
+                    break
+                n = n.nref
+            if n is None:
+                print("car not in the train")
+            else:
+                newCar = Car(data)
+                newCar.previous = n
+                newCar.next = n.next
+                if n.next is not None:
+                    n.next.previous =  newCar
+                n.next = newCar
+    def deleteCar(self,x):
+        if self.head is None:
+            print("The train has no element to delete")
+            return
+        if self.head.next is None:
+            if self.head.item == x:
+                self.head = None
+            else:
+                print("Car not found")
+            return
+        if self.head.item == x:
+            self.head = self.head.next
+            self.head.previous = None
+            return
+        
+        n = self.head
+        while n.next is not None:
+            if n.item == x:
+                break;
+            n = n.next
+        if n.next is not None:
+            n.previous.next = n.next
+            n.next.previous = n.previous
+        else:
+            if n.item == x:
+                n.previous.next = None
+            else :
+                print("Car not found")
     def showHead(self):
         self.head.car.showHandler()
