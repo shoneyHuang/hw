@@ -4,8 +4,9 @@ nodecar = Train()
 
 locomotive = Locomotive('A Manufactor',CarType.LOCOMOTIVE,'shoney huang',10)
 
-nodecar.addCar(locomotive)
+nodecar.createTrain(locomotive)
 nodecar.showHead()
+nodecar.getCarCount()
 
 # car = []
 # car.append(FuelCar('B Manufactor',CarType.FUEL,100))
