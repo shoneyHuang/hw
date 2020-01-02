@@ -45,7 +45,7 @@ def doSernoOne():
             if(fuelCount > 500 or fuelCount < 0):
                 print('燃料車廂要給正確的燃料')
             else:
-                car =   FuelCar(carmanufaturer,createType,fuel)
+                car =   FuelCar(carmanufaturer,createType,fuelCount)
         #or passenger car
         else:
             car = PassengerCar(carmanufaturer,createType,0)
@@ -77,7 +77,7 @@ def doSernoSix():
         pointer = pointer.next
     return False
 # endModify
-def doSernoSenven():
+def doSernoSeven():
     pointer = _train.head.next
     while(pointer):
         if pointer.car.cartype == CarType.PASSENGER:
@@ -101,6 +101,6 @@ def switch_userDoing(argument):
         '5': doSernoFive,
         '6': doSernoSix,
         '7': doSernoSeven,
-
+        '8': doSernoEight
     }
     return switcher.get(argument,doEnd)()
