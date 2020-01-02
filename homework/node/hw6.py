@@ -31,18 +31,19 @@ class Train:
         pointer.car.showfuel()
 
         if pointer.next is not None:
+            print("aaaaaaaaa")
             pointer = pointer.next
-        while(pointer):
-            typeTrans = '燃料' if pointer.car.cartype == CarType.FUEL else '乘客'
-            if(pointer.car.cartype == CarType.FUEL):
-                print('這是第' + str(pointer.carnum) + '節' + typeTrans + '車廂')
-                pointer.car.showmanufacturer()
-                pointer.car.showfuel()
-            else:
-                print('這是第' + str(pointer.carnum) + '節' + typeTrans + '車廂')
-                pointer.car.showmanufacturer()
-                pointer.car.showPassenger()
-            pointer = pointer.next
+            while(pointer):
+                typeTrans = '燃料' if pointer.car.cartype == CarType.FUEL else '乘客'
+                if(pointer.car.cartype == CarType.FUEL):
+                    print('這是第' + str(pointer.carnum) + '節' + typeTrans + '車廂')
+                    pointer.car.showmanufacturer()
+                    pointer.car.showfuel()
+                else:
+                    print('這是第' + str(pointer.carnum) + '節' + typeTrans + '車廂')
+                    pointer.car.showmanufacturer()
+                    pointer.car.showPassenger()
+                pointer = pointer.next
 
     def addCar(self,x,data):
         if self.head is None:
@@ -56,7 +57,7 @@ class Train:
             if n is None:
                 print("car not in the train")
             else:
-                newCar = Car(data)
+                newCar = Car(data,self.getCarCount())
                 newCar.previous = n
                 newCar.next = n.next
                 if n.next is not None:
