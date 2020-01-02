@@ -1,103 +1,113 @@
-
 from hw1 import Locomotive,PassengerCar,FuelCar,CarType,CarBase
-from hw6 import Train,Car
 
+class Car(CarBase):
+    def __init__(self,car,carnum):
+        self.car = car
+        self.next = None
+        self.previous = None
+        self.carnum = carnum
+        return
 
-_train = None
-def UserInterface():
-    ending = False
-    locomotiveManufaturer = input('請輸入火車頭製造商: ')
-    locomotiveHandler = input('請輸入列車長姓名: ')
-    global _train 
-    _train = Train()
-    locomotive = Locomotive(locomotiveManufaturer,CarType.LOCOMOTIVE,locomotiveHandler,100)
-    _train.createTrain(locomotive)
-
-    while(not ending):
-        print('==================')
-        print('請問接下來要做什麼?')
-        print('==================')
-        print('1. 加車廂')
-        print('2. 刪除指定列車')
-        print('3. 更換火車頭')
-        print('4. 顯示列車狀態')
-        print('5. 行駛列車')
-        print('6. 乘客上車')
-        print('7. 乘客下車')
-        print('8. 火車頭燃料補充')
-        print('Other. 結束')
-        print('==================')
-        ending = switch_userDoing(input('請輸入: '))
-
-        
-
-def doSernoOne():
-    insertIndex = int(input("請問要插到第幾節車廂後?"))
-    # whether car num exists or not
-    if _train.checkCar(insertIndex):
-        car = None
-        carType = int(input('請問需要哪種車廂? 1.燃料 2.乘客: '))
-        createType = CarType.FUEL if carType == 1 else CarType.PASSENGER
-        carmanufaturer = input('請問製造商? ')
-        #if cartype is fuel car
-        if carType == 1:
-            fuelCount = int(input('請問燃料數量? '))
-            if(fuelCount > 500 or fuelCount < 0):
-                print('燃料車廂要給正確的燃料')
-            else:
-                car =   FuelCar(carmanufaturer,createType,fuel)
-        #or passenger car
+class Train:
+    def __init__(self):
+        self.head = None
+    def createTrain(self,locomotive):
+        if self.head is None:
+            self.head = Car(locomotive,self.getCarCount()+1)
         else:
-            car = PassengerCar(carmanufaturer,createType,0)
+            print('Locomotive exists')
+    def getCarCount(self):
+        temp = self.head
+        count = 0
+        while (temp):
+            count += 1
+            temp = temp.next
+        return count
+    def traversal(self):
+        pointer = self.head
+        print("這是火車頭")
+        pointer.car.showmanufacturer()
+        pointer.car.showHandler()
+        pointer.car.showfuel()
 
-        _train.addCar(insertIndex,car)
+        if pointer.next is not None:
+            pointer = pointer.next
+            while(pointer):
+                typeTrans = '燃料' if pointer.car.cartype == CarType.FUEL else '乘客'
+                if(pointer.car.cartype == CarType.FUEL):
+                    print('這是第' + str(pointer.carnum) + '節' + typeTrans + '車廂')
+                    pointer.car.showmanufacturer()
+                    pointer.car.showfuel()
+                else:
+                    print('這是第' + str(pointer.carnum) + '節' + typeTrans + '車廂')
+                    pointer.car.showmanufacturer()
+                    pointer.car.showPassenger()
+                pointer = pointer.next
+    def checkCar(self,specificNum):
+        pointer = self.head
+        while (pointer):
+            if pointer.carnum == specificNum:
+                return True
+        return False
+
+    def addCar(self,specificNum,data):
+        if self.head is None:
+            print("Please init Locomotive first")
+        else:
+            pointer = self.head
+            index = 1
+            # get specific number exists in linked list or not
+            while pointer is not None:
+                index += 1
+                if pointer.carnum == specificNum:
+                    break
+                pointer = pointer.next
+
         
-    else:
-        print("車廂不存在!")
-    return False
+            if pointer is None:
+                print("car not in the train")
+            else:
+                #set new car : previos = pointer and next = pointer.next
+                newCar = Car(data,index)
+                newCar.previous = pointer
+                newCar.next = pointer.next
+                #if pointer next car is not null, set next car's previous = new car
+                if pointer.next is not None:
+                    pointer.next.previous =  newCar
+                #and set pointer.next = new car, then renumbering
+                pointer.next = newCar
 
-# endModify
-def doSernoFour():
-    _train.traversal()
-    return False
-# endModify
-def doSernoFive():
-    travelHour = input('請問要行駛多久? ')
-    _train.head.car.travel(travelHour)
-    return False
-# endModify
-def doSernoSix():
-    pointer = _train.head.next
-    while(pointer):
-        if pointer.car.cartype == CarType.PASSENGER:
-            pointer.car.boarding(input('這節車廂要上來多少人? '))
-        pointer = pointer.next
-    return False
-# endModify
-def doSernoSenven():
-    pointer = _train.head.next
-    while(pointer):
-        if pointer.car.cartype == CarType.PASSENGER:
-            pointer.car.getoff(input('這節車廂要下去多少人? '))
-        pointer = pointer.next
-    return False
-# endModify
-def doSernoEight():
-    _train.head.car.refuel()
-    return False
-def doEnd():
-    return True
+                pointer = pointer.next.next
+                while(pointer):
+                    index += 1
+                    pointer.carnum = index
+                    pointer = pointer.next
 
-def switch_userDoing(argument):
-    print()
-    switcher = {
-        '1': doSernoOne,
-        '2': doSernoTwo,
-        '3': doSernoThree,
-        '4': doSernoFour,
-        '5': doSernoFive,
-        '6': doSernoSix,
-        '7': doSernoSeven,
-
-    }
-    return switcher.get(argument,doEnd)()
+    def deleteCar(self,x):
+        if self.head is None:
+            print("The train has no element to delete")
+            return
+        if self.head.next is None:
+            if self.head.car == x:
+                self.head = None
+            else:
+                print("Car not found")
+            return
+        if self.head.car == x:
+            self.head = self.head.next
+            self.head.previous = None
+            return
+        
+        n = self.head
+        while n.next is not None:
+            if n.car == x:
+                break
+            n = n.next
+        if n.next is not None:
+            n.previous.next = n.next
+            n.next.previous = n.previous
+        else:
+            if n.car == x:
+                n.previous.next = None
+            else :
+                print("Car not found")
