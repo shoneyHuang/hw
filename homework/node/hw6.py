@@ -24,25 +24,25 @@ class Train:
             temp = temp.next
         return count
     def traversal(self):
-        car = self.head
+        pointer = self.head
         print("這是火車頭")
-        car.showmanufacturer()
-        car.showHandler()
-        car.showfuel()
+        pointer.car.showmanufacturer()
+        pointer.car.showHandler()
+        pointer.car.showfuel()
 
-        if car.next is not None:
-            car = car.next
-        while(car):
-            typeTrans = '燃料' if car.cartype == CarType.FUEL else '乘客'
-            if(car.cartype == CarType.FUEL):
-                print('這是第' + str(car.carNum) + '節' + typeTrans + '車廂')
-                car.showmanufacturer()
-                car.showfuel()
+        if pointer.next is not None:
+            pointer = pointer.next
+        while(pointer):
+            typeTrans = '燃料' if pointer.car.cartype == CarType.FUEL else '乘客'
+            if(pointer.car.cartype == CarType.FUEL):
+                print('這是第' + str(pointer.carNum) + '節' + typeTrans + '車廂')
+                pointer.car.showmanufacturer()
+                pointer.car.showfuel()
             else:
-                print('這是第' + str(car.carNum) + '節' + typeTrans + '車廂')
-                car.showmanufacturer()
-                car.showPassenger()
-            car = car.next
+                print('這是第' + str(pointer.carNum) + '節' + typeTrans + '車廂')
+                pointer.car.showmanufacturer()
+                pointer.car.showPassenger()
+            pointer = pointer.next
 
     def addCar(self,x,data):
         if self.head is None:
@@ -50,7 +50,7 @@ class Train:
         else:
             n = self.head
             while n is not None:
-                if n.item == x:
+                if n.car == x:
                     break
                 n = n.nref
             if n is None:
@@ -67,26 +67,26 @@ class Train:
             print("The train has no element to delete")
             return
         if self.head.next is None:
-            if self.head.item == x:
+            if self.head.car == x:
                 self.head = None
             else:
                 print("Car not found")
             return
-        if self.head.item == x:
+        if self.head.car == x:
             self.head = self.head.next
             self.head.previous = None
             return
         
         n = self.head
         while n.next is not None:
-            if n.item == x:
+            if n.car == x:
                 break
             n = n.next
         if n.next is not None:
             n.previous.next = n.next
             n.next.previous = n.previous
         else:
-            if n.item == x:
+            if n.car == x:
                 n.previous.next = None
             else :
                 print("Car not found")
