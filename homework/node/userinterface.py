@@ -55,7 +55,10 @@ def doSernoOne():
     else:
         print("車廂不存在!")
     return False
-
+def doSernoTwo():
+    return False
+def doSernoThree():
+    return False
 # endModify
 def doSernoFour():
     _train.traversal()
