@@ -31,7 +31,6 @@ class Train:
         pointer.car.showfuel()
 
         if pointer.next is not None:
-            print("aaaaaaaaa")
             pointer = pointer.next
             while(pointer):
                 typeTrans = '燃料' if pointer.car.cartype == CarType.FUEL else '乘客'
