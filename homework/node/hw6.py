@@ -1,4 +1,4 @@
-from hw1 import Locomotive,PassengerCar,FuelCar,CarType
+from hw1 import Locomotive,PassengerCar,FuelCar,CarType,CarBase
 
 class Car(CarBase):
     def __init__(self,car,carnum):
