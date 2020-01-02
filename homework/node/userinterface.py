@@ -30,7 +30,7 @@ def UserInterface():
         ending = switch_userDoing(input('請輸入: '))
 
         
-
+# endModify
 def doSernoOne():
     insertIndex = int(input("請問要插到第幾節車廂後?"))
     # whether car num exists or not
@@ -51,13 +51,24 @@ def doSernoOne():
             car = PassengerCar(carmanufaturer,createType,0)
 
         _train.addCar(insertIndex,car)
-
     else:
         print("車廂不存在!")
     return False
+# endModify
 def doSernoTwo():
+    deleteIndex = int(input("請問要刪除第幾節車廂?"))
+    if _train.checkCar(deleteIndex) and deleteIndex != 1:
+        _train.deleteCar(deleteIndex)
+    else:
+        if deleteIndex == 1:
+            print("火車頭不可刪除")
+        else:
+            print("指定車廂不存在")
     return False
 def doSernoThree():
+    locomotiveManufaturer = input('請輸入火車頭製造商: ')
+    locomotiveHandler = input('請輸入列車長姓名: ')
+    _train.changeLocomotive(Locomotive(locomotiveManufaturer,CarType.LOCOMOTIVE,locomotiveHandler,100))
     return False
 # endModify
 def doSernoFour():
