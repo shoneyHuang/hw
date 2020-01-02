@@ -13,7 +13,7 @@ class Train:
         self.head = None
     def createTrain(self,locomotive):
         if self.head is None:
-            self.head = Car(locomotive,getCarCount()+1)
+            self.head = Car(locomotive,self.getCarCount()+1)
         else:
             print('Locomotive exists')
     def getCarCount(self):
