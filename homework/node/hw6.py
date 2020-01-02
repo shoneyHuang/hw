@@ -48,6 +48,7 @@ class Train:
         while (pointer):
             if pointer.carnum == specificNum:
                 return True
+            pointer = pointer.next
         return False
 
     def addCar(self,specificNum,data):
