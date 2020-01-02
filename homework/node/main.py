@@ -1,4 +1,5 @@
-from hw1 import Train,Locomotive,PassengerCar,FuelCar,CarType,Car
+from hw1 import Locomotive,PassengerCar,FuelCar,CarType
+from hw6 import Train,Car
 
 nodecar = Train()
 
@@ -6,6 +7,7 @@ locomotive = Locomotive('A Manufactor',CarType.LOCOMOTIVE,'shoney huang',10)
 
 nodecar.createTrain(locomotive)
 nodecar.showHead()
+nodecar.traversal()
 print(nodecar.getCarCount())
 
 # car = []
